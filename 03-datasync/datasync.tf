@@ -136,11 +136,18 @@ resource "aws_datasync_task" "projects" {
   source_location_arn      = aws_datasync_location_efs.projects[each.key].arn
   destination_location_arn = aws_datasync_location_s3.projects[each.key].arn
 
+  # ------------------------------------------------------------------------------
+  # CloudWatch Logging
+  # TRANSFER level logs every file transferred, skipped, and verified.
+  # ------------------------------------------------------------------------------
+  cloudwatch_log_group_arn = aws_cloudwatch_log_group.datasync.arn
+
   options {
     bytes_per_second       = -1
     transfer_mode          = "CHANGED"
     preserve_deleted_files = "REMOVE"
     verify_mode            = "ONLY_FILES_TRANSFERRED"
+    log_level              = "TRANSFER"
   }
 
   tags = { Name = "sync-${each.key}" }

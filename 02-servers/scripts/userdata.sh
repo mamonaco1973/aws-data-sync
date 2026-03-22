@@ -196,16 +196,16 @@ chmod -R 775 aws-efs
 chgrp -R mcloud-users aws-efs
 
 git clone https://github.com/mamonaco1973/aws-mgn-example.git
-chmod -R 775 aws-efs
-chgrp -R mcloud-users aws-efs
+chmod -R 775 aws-mgn-example
+chgrp -R mcloud-users aws-mgn-example
 
 git clone https://github.com/mamonaco1973/aws-workspaces.git
-chmod -R 775 aws-efs
-chgrp -R mcloud-users aws-efs
+chmod -R 775 aws-workspaces
+chgrp -R mcloud-users aws-workspaces
 
 git clone https://github.com/mamonaco1973/aws-mysql.git
-chmod -R 775 aws-efs
-chgrp -R mcloud-users aws-efs
+chmod -R 775 aws-mysql
+chgrp -R mcloud-users aws-mysql
 
 # Signal that EFS population is complete — validate.sh polls this before
 # starting DataSync tasks to avoid transferring an incomplete dataset.
