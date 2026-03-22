@@ -59,16 +59,30 @@ resource "aws_iam_policy" "secrets_policy" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Action = [
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:DescribeSecret"
-      ]
-      Resource = [
-        data.aws_secretsmanager_secret.admin_secret.arn
-      ]
-    }]
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = [
+          data.aws_secretsmanager_secret.admin_secret.arn
+        ]
+      },
+      {
+        # ----------------------------------------------------------------------
+        # Allows userdata to write a sentinel to SSM Parameter Store when EFS
+        # population is complete, so validate.sh can gate DataSync task start.
+        # ----------------------------------------------------------------------
+        Effect = "Allow"
+        Action = [
+          "ssm:PutParameter",
+          "ssm:DeleteParameter"
+        ]
+        Resource = "arn:aws:ssm:*:*:parameter/datasync/efs-ready"
+      }
+    ]
   })
 }
 

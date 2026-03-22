@@ -23,6 +23,34 @@ POLL_INTERVAL=15
 MAX_WAIT=3600  # 1 hour — DataSync transfers can take time depending on data size
 
 # ------------------------------------------------------------------------------
+# Wait for EFS Population to Complete
+# userdata.sh writes /datasync/efs-ready to SSM Parameter Store when all git
+# repos are cloned into EFS. Poll until it appears before starting tasks.
+# ------------------------------------------------------------------------------
+echo "============================================================================"
+echo "DataSync — Waiting for EFS Population"
+echo "============================================================================"
+echo ""
+
+EFS_WAIT_MAX=1800  # 30 minutes — git clones + package installs can be slow
+EFS_ELAPSED=0
+until aws ssm get-parameter --name "/datasync/efs-ready" --query 'Parameter.Value' --output text 2>/dev/null | grep -q "ready"; do
+  if [[ "${EFS_ELAPSED}" -ge "${EFS_WAIT_MAX}" ]]; then
+    echo "ERROR: Timed out waiting for EFS population sentinel (/datasync/efs-ready)."
+    exit 1
+  fi
+  echo "NOTE: EFS not ready yet — waiting... (${EFS_ELAPSED}s elapsed)"
+  sleep 30
+  EFS_ELAPSED=$(( EFS_ELAPSED + 30 ))
+done
+
+echo "NOTE: EFS population complete. Starting DataSync tasks."
+echo ""
+
+# Clean up the sentinel — it is only needed once per deploy.
+aws ssm delete-parameter --name "/datasync/efs-ready" 2>/dev/null || true
+
+# ------------------------------------------------------------------------------
 # Read DataSync Task ARNs from Terraform Output
 # Terraform outputs a JSON map of { project-name: task-arn }.
 # Parse into an associative array for named tracking through execution.

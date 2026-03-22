@@ -207,3 +207,11 @@ git clone https://github.com/mamonaco1973/aws-mysql.git
 chmod -R 775 aws-efs
 chgrp -R mcloud-users aws-efs
 
+# Signal that EFS population is complete — validate.sh polls this before
+# starting DataSync tasks to avoid transferring an incomplete dataset.
+aws ssm put-parameter \
+  --name "/datasync/efs-ready" \
+  --value "ready" \
+  --type String \
+  --overwrite
+
