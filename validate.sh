@@ -162,6 +162,9 @@ done
 if [[ -n "${BUCKET}" ]]; then
   echo ""
   echo "NOTE: Destination bucket: s3://${BUCKET}"
+  echo ""
+  aws s3 ls s3://${BUCKET}/
+  echo ""
 fi
 
 echo ""
