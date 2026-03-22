@@ -51,7 +51,7 @@ locals {
 # ================================================================================
 resource "aws_security_group" "datasync_sg" {
   name        = "datasync-sg"
-  description = "Security group for DataSync ENI — outbound to EFS and AWS APIs"
+  description = "Security group for DataSync ENI - outbound to EFS and AWS APIs"
   vpc_id      = data.aws_vpc.ad_vpc.id
 
   # ------------------------------------------------------------------------------
