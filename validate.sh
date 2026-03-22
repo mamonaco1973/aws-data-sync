@@ -3,7 +3,6 @@
 # validate.sh
 #
 # Purpose:
-#   - Prints EC2 instance endpoints for quick SSH/RDP access.
 #   - Reads DataSync task ARNs from Terraform output in 03-datasync.
 #   - Starts all four DataSync tasks concurrently.
 #   - Polls each task execution until all reach SUCCESS or any reach ERROR.
@@ -22,43 +21,6 @@ export AWS_DEFAULT_REGION="us-east-1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 POLL_INTERVAL=15
 MAX_WAIT=3600  # 1 hour — DataSync transfers can take time depending on data size
-
-# ------------------------------------------------------------------------------
-# Helper: Get EC2 public DNS by Name tag
-# ------------------------------------------------------------------------------
-get_public_dns_by_name_tag() {
-  local name_tag="$1"
-  aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=${name_tag}" \
-    --query "Reservations[].Instances[].PublicDnsName" \
-    --output text | xargs
-}
-
-# ------------------------------------------------------------------------------
-# EC2 Endpoint Output
-# ------------------------------------------------------------------------------
-windows_dns="$(get_public_dns_by_name_tag "windows-ad-admin")"
-linux_dns="$(get_public_dns_by_name_tag "efs-client-gateway")"
-
-echo ""
-echo "============================================================================"
-echo "EFS + Active Directory — Instance Endpoints"
-echo "============================================================================"
-echo ""
-
-if [[ -n "${windows_dns}" && "${windows_dns}" != "None" ]]; then
-  echo "NOTE: Windows RDP Host: ${windows_dns}"
-else
-  echo "WARN: windows-ad-admin not found or has no public DNS."
-fi
-
-if [[ -n "${linux_dns}" && "${linux_dns}" != "None" ]]; then
-  echo "NOTE: Linux SSH Host:   ${linux_dns}"
-else
-  echo "WARN: efs-client-gateway not found or has no public DNS."
-fi
-
-echo ""
 
 # ------------------------------------------------------------------------------
 # Read DataSync Task ARNs from Terraform Output

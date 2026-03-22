@@ -43,6 +43,18 @@ rm -rf aws awscliv2.zip
 mkdir -p /efs
 echo "${efs_mnt_server}:/ /efs efs _netdev,tls 0 0" >> /etc/fstab
 systemctl daemon-reload
+
+# Wait for EFS DNS to propagate — mount target may not be resolvable immediately
+# after Terraform marks it available. Retry for up to 5 minutes.
+for i in $(seq 1 20); do
+  if getent hosts "${efs_mnt_server}" > /dev/null 2>&1; then
+    echo "EFS DNS resolved on attempt $i"
+    break
+  fi
+  echo "Waiting for EFS DNS resolution... attempt $i/20"
+  sleep 15
+done
+
 mount /efs
 
 mkdir -p /efs/home /efs/data
