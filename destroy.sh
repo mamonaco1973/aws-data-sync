@@ -48,6 +48,9 @@ cd .. || exit
 # ------------------------------------------------------------------------------
 echo "NOTE: Destroying EC2 server instances..."
 
+# Delete the EFS-ready sentinel so a fresh apply forces a new wait.
+aws ssm delete-parameter --name "/datasync/efs-ready" 2>/dev/null || true
+
 cd 02-servers || { echo "ERROR: Directory 02-servers not found"; exit 1; }
 
 terraform init

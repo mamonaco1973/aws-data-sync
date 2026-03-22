@@ -47,9 +47,6 @@ done
 echo "NOTE: EFS population complete. Starting DataSync tasks."
 echo ""
 
-# Clean up the sentinel — it is only needed once per deploy.
-aws ssm delete-parameter --name "/datasync/efs-ready" 2>/dev/null || true
-
 # ------------------------------------------------------------------------------
 # Read DataSync Task ARNs from Terraform Output
 # Terraform outputs a JSON map of { project-name: task-arn }.
