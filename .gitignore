@@ -5,3 +5,4 @@
 *.terraform.*
 *.pem
 *.pub
+*.log

@@ -167,6 +167,43 @@ if [[ -n "${BUCKET}" ]]; then
   echo ""
 fi
 
+# ------------------------------------------------------------------------------
+# Download CloudWatch Logs
+# DataSync names log streams using the execution ARN with the service prefix
+# stripped — e.g. arn:aws:datasync:region:account:task/T/execution/E becomes
+# task/T/execution/E. Each stream is written to datasync-<name>.log in the
+# project root.
+# ------------------------------------------------------------------------------
+echo "============================================================================"
+echo "DataSync — Downloading CloudWatch Logs"
+echo "============================================================================"
+echo ""
+
+LOG_GROUP=$(terraform -chdir="${SCRIPT_DIR}/03-datasync" output -raw datasync_log_group 2>/dev/null || true)
+
+if [[ -n "${LOG_GROUP}" ]]; then
+  for NAME in "${!EXEC_MAP[@]}"; do
+    EXEC_ARN="${EXEC_MAP[${NAME}]}"
+    LOG_STREAM=$(echo "${EXEC_ARN}" | sed 's|arn:aws:datasync:[^:]*:[^:]*:||')
+    LOG_FILE="${SCRIPT_DIR}/datasync-${NAME}.log"
+
+    aws logs get-log-events \
+      --log-group-name "${LOG_GROUP}" \
+      --log-stream-name "${LOG_STREAM}" \
+      --output json 2>/dev/null \
+      | jq -r '.events[].message' > "${LOG_FILE}" || true
+
+    if [[ -s "${LOG_FILE}" ]]; then
+      echo "NOTE: ${NAME} — $(wc -l < "${LOG_FILE}") log lines -> $(basename "${LOG_FILE}")"
+    else
+      echo "WARN: ${NAME} — no log events found (stream may not exist yet)"
+      rm -f "${LOG_FILE}"
+    fi
+  done
+else
+  echo "WARN: Could not retrieve log group name from Terraform output."
+fi
+
 echo ""
 echo "NOTE: Validation complete."
 echo ""
