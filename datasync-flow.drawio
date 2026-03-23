@@ -4,20 +4,20 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;" value="AWS DataSync — EFS to S3 Migration Flow" vertex="1">
-          <mxGeometry height="40" width="869" x="150" y="15" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;AWS DataSync — EFS to S3 Migration Flow&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="869" x="127" y="15" as="geometry" />
         </mxCell>
         <mxCell id="hdr-efs" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#248814;" value="EFS Source Locations" vertex="1">
-          <mxGeometry height="30" width="180" x="48" y="68" as="geometry" />
+          <mxGeometry height="30" width="180" x="30" y="68" as="geometry" />
         </mxCell>
         <mxCell id="hdr-task" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#E7157B;" value="DataSync Tasks" vertex="1">
-          <mxGeometry height="30" width="172" x="464" y="68" as="geometry" />
+          <mxGeometry height="30" width="172" x="456" y="68" as="geometry" />
         </mxCell>
         <mxCell id="hdr-s3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#248814;" value="S3 Destination Locations" vertex="1">
-          <mxGeometry height="30" width="200" x="884" y="68" as="geometry" />
+          <mxGeometry height="30" width="200" x="860" y="68" as="geometry" />
         </mxCell>
         <mxCell id="concurrent-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#E7157B;dashed=1;strokeWidth=2;verticalAlign=top;fontSize=11;fontStyle=2;fontColor=#E7157B;spacingTop=6;" value="" vertex="1">
-          <mxGeometry height="502" width="188" x="456" y="106" as="geometry" />
+          <mxGeometry height="502" width="180" x="450" y="106" as="geometry" />
         </mxCell>
         <mxCell id="efs-1" parent="1" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elastic_file_system;" value="/aws-efs" vertex="1">
           <mxGeometry height="72" width="72" x="84" y="128" as="geometry" />
