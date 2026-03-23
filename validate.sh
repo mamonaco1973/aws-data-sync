@@ -169,9 +169,9 @@ fi
 
 # ------------------------------------------------------------------------------
 # Download CloudWatch Logs
-# DataSync names log streams using the execution ARN with the service prefix
-# stripped — e.g. arn:aws:datasync:region:account:task/T/execution/E becomes
-# task/T/execution/E. Each stream is written to datasync-<name>.log in the
+# DataSync log stream names use the format task-{ID}-exec-{ID}, derived from
+# the execution ARN. e.g. arn:...:task/task-ABC/execution/exec-XYZ becomes
+# task-ABC-exec-XYZ. Each stream is written to datasync-<name>.log in the
 # project root.
 # ------------------------------------------------------------------------------
 echo "============================================================================"
@@ -184,7 +184,7 @@ LOG_GROUP=$(terraform -chdir="${SCRIPT_DIR}/03-datasync" output -raw datasync_lo
 if [[ -n "${LOG_GROUP}" ]]; then
   for NAME in "${!EXEC_MAP[@]}"; do
     EXEC_ARN="${EXEC_MAP[${NAME}]}"
-    LOG_STREAM=$(echo "${EXEC_ARN}" | sed 's|arn:aws:datasync:[^:]*:[^:]*:||')
+    LOG_STREAM=$(echo "${EXEC_ARN}" | sed 's|arn:aws:datasync:[^:]*:[^:]*:task/\(task-[^/]*\)/execution/\(exec-[^/]*\)|\1-\2|')
     LOG_FILE="${SCRIPT_DIR}/datasync-${NAME}.log"
 
     aws logs get-log-events \
