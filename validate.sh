@@ -180,12 +180,13 @@ echo "==========================================================================
 echo ""
 
 LOG_GROUP=$(terraform -chdir="${SCRIPT_DIR}/03-datasync" output -raw datasync_log_group 2>/dev/null || true)
+RUN_TS=$(date -u +"%Y%m%d-%H%M%S")
 
 if [[ -n "${LOG_GROUP}" ]]; then
   for NAME in "${!EXEC_MAP[@]}"; do
     EXEC_ARN="${EXEC_MAP[${NAME}]}"
     LOG_STREAM=$(echo "${EXEC_ARN}" | sed 's|arn:aws:datasync:[^:]*:[^:]*:task/\(task-[^/]*\)/execution/\(exec-[^/]*\)|\1-\2|')
-    LOG_FILE="${SCRIPT_DIR}/datasync-${NAME}.log"
+    LOG_FILE="${SCRIPT_DIR}/datasync-${NAME}-${RUN_TS}.log"
 
     aws logs get-log-events \
       --log-group-name "${LOG_GROUP}" \
