@@ -139,8 +139,9 @@ resource "aws_datasync_task" "projects" {
   # ------------------------------------------------------------------------------
   # CloudWatch Logging
   # TRANSFER level logs every file transferred, skipped, and verified.
+  # The ARN must end with :* — DataSync requires the log stream wildcard suffix.
   # ------------------------------------------------------------------------------
-  cloudwatch_log_group_arn = aws_cloudwatch_log_group.datasync.arn
+  cloudwatch_log_group_arn = "${aws_cloudwatch_log_group.datasync.arn}:*"
 
   options {
     bytes_per_second       = -1
@@ -149,6 +150,9 @@ resource "aws_datasync_task" "projects" {
     verify_mode            = "ONLY_FILES_TRANSFERRED"
     log_level              = "TRANSFER"
   }
+
+  # Resource policy must exist before DataSync can write logs.
+  depends_on = [aws_cloudwatch_log_resource_policy.datasync]
 
   tags = { Name = "sync-${each.key}" }
 }
