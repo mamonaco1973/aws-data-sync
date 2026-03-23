@@ -16,6 +16,8 @@ The infrastructure is deployed in three phases:
 
 **AWS DataSync** is a managed data transfer service that automates moving data between storage systems. It handles scheduling, monitoring, retries, and integrity verification — without requiring custom transfer scripts or a dedicated agent for AWS-to-AWS transfers.
 
+![flow](datasync-flow.png)
+
 ### How This Project Uses DataSync
 
 Four git repositories are cloned into EFS by the Linux instance at boot:
