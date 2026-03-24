@@ -65,8 +65,7 @@ It starts queued, launches the transfer workers,prepares the dataset, performs t
 
 After the build completes, the DataSync locations are created.
 
-Here we have the EFS source location and the S3 destination
-location that will receive the migrated data.
+Here we have the EFS source location and the S3 destination location that will receive the migrated data.
 
 [ Switch to DataSync → Tasks ]
 
@@ -76,8 +75,7 @@ Each task maps a specific EFS directory to a corresponding destination prefix in
 
 [ Click one task: sync-aws-efs ]
 
-If we open one of the tasks, you can see the source EFS location
-and the destination S3 bucket configuration.
+If we open one of the tasks, you can see the source EFS location and the destination S3 bucket configuration.
 
 [ Switch to S3 Console – open destination bucket ]
 
@@ -103,7 +101,6 @@ In this case there are no updates so nothing needs to be transferred.
 
 [Show S3 bucket]
 
-The data is already present in S3, so the task simply verifies that
-the source and destination are in sync.
+The data is already present in S3, so the task simply verifies that the source and destination are in sync.
 
 This incremental behavior makes DataSync useful for large migrations where a final sync is needed just before cutover.
