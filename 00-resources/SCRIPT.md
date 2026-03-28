@@ -61,27 +61,35 @@ It starts queued, launches the transfer workers,prepares the dataset, performs t
 
 ## Build Results
 
-[ Show AWS Console – DataSync → Locations ]
+[ Show AWS Console – Agents]
 
-After the build completes, the DataSync locations are created.
+The first thing to verify is the DataSync agents.
 
-Here we have the EFS source location and the S3 destination location that will receive the migrated data.
+Here you can see the two agents that were deployed as EC2 instances and registered with the DataSync service.
+
+Each agent will participate in the transfer tasks and stream data from the SMB share to AWS.
+
+[ Switch to DataSync → Locations ]
+
+Next are the DataSync locations.
+
+Here we have the SMB source location that points to the Samba file share and the S3 destination location that will receive the migrated data.
 
 [ Switch to DataSync → Tasks ]
 
 Terraform also created the DataSync tasks.
 
-Each task maps a specific EFS directory to a corresponding destination prefix in S3.
+Each task maps a specific SMB source directory to a corresponding destination in S3.
 
-[ Click one task: sync-aws-efs ]
+Because two agents are available, two tasks can run at the same time.
 
-If we open one of the tasks, you can see the source EFS location and the destination S3 bucket configuration.
+[ Click one task ]
+
+If we open one of the tasks you can see the source SMB location and the destination S3 bucket configuration.
 
 [ Switch to S3 Console – open destination bucket ]
 
-This is the destination S3 bucket.
-
-Each DataSync task writes to its own prefix inside the bucket.
+Here is the destination S3 bucket. Each DataSync task writes data from SMB into the S3 bucket.
 
 ## Demo
 
